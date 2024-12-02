@@ -39,7 +39,7 @@ After doing this, you can find the snapshot in the console interface.
 
 ## :rocket: Deploy the cluster
 
-Navigate to the `terraform` fdirectory in the repository and modify the necessary variables in the `.tfvars` file. Descriptions are provided [below](#variable-description). <br>
+Navigate to the `terraform` fdirectory in the repository and modify the necessary variables in the `.tfvars` file. Descriptions are provided below. <br>
 The `cloud` block within the `providers.tf` file is used for configuring Terraform Cloud as the backend for storing the state. If you prefer to use a different backend (e.g., AWS S3, Azure Blob Storage, etc.), feel free to update the configuration to suit your needs.
 
 Please note that the `hcloud_token` variable must be defined somewhere. You can choose your preferred method for this, whether it's by defining it directly in the `.tfvars` file, as a variable in Terraform Cloud, or through an external secrets management tool.
@@ -113,8 +113,8 @@ I strongly suggest running `terraform destroy -var-file .tfvars -target=hcloud_l
 ##### **cp_instance_type**
 `string`. Instance type of the control plane nodes. For example, `"cax11"`
 #####  **cp_start_offset**
-`number`. Specifies the starting index for assigning IP addresses to control plane nodes. This value is used as an offset within the defined CIDR range to ensure unique IP allocation. For example, it helps calculate control plane node IPs by incrementing from this starting point using a loop or function like `cidrhost`. IP addresses will be allocated in the `subnet_cloud_cidr` range. For example, `1`.
-Setting `1` as `cp_start_offset` with `3` as `cp_instance_count` will result in the following list of IP addresses for the control plane nodes: `["10.0.1.1", "10.0.1.2", "10.0.1.3"]`.
+`number`. Specifies the starting index for assigning IP addresses to control plane nodes. This value is used as an offset within the defined CIDR range to ensure unique IP allocation. For example, it helps calculate control plane node IPs by incrementing from this starting point using a loop or function like `cidrhost`. IP addresses will be allocated in the `subnet_cloud_cidr` range. <br>
+Setting `1` as `cp_start_offset` and `3` as `cp_instance_count` will result in the following list of IP addresses for the control plane nodes: `["10.0.1.1", "10.0.1.2", "10.0.1.3"]`.
 For nodepools, setting `10` as `np_1_start_offset` will allocate IP addresses starting at `10.0.1.10` for that specific nodepool. You could set the first nodepool offset to `10`, the second nodepool offset to `20` and so on. This would allocate IPs from `10.0.1.10` to `10.0.1.19` to the first nodepool. IPs from `10.0.1.20` to `10.0.1.29` to the second one, etc. Please keep in mind the 10 node limit per nodepool.
 ##### **cp_locations**
 `list(string)`. Locations have been set manually. While this is a bit hacky, automatically generating them would introduce unnecessary complexity. These variables are configured so that servers with the same index across different node pools are placed in different locations. For example, server 1 in nodepool 1 will be deployed in a different location than server 1 in nodepool 3.
