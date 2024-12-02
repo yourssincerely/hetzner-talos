@@ -1,0 +1,44 @@
+machine:
+  kubelet:
+    nodeIP:
+      validSubnets:
+        - ${subnet}
+  certSANs:
+      - ${lb_int_ip}
+      - ${lb_ext_ip}
+  time:
+      servers:
+          - ntp1.hetzner.de
+          - ntp2.hetzner.com
+          - ntp3.hetzner.net
+          - 0.de.pool.ntp.org
+          - 1.de.pool.ntp.org
+          - time.cloudflare.com
+#   logging:
+#     destinations:
+#       - endpoint: tcp://1.2.3.4:5678
+#         format: json_lines
+cluster:
+  externalCloudProvider:
+    enabled: true
+  clusterName: "${cluster_name}"
+  network:
+    dnsDomain: "${cluster_name}.local"
+    podSubnets:
+      - ${cluster_CIDR}
+    serviceSubnets:
+      - ${service_CIDR}
+    cni:
+      name: none
+  proxy:
+    disabled: true
+  apiServer:
+    certSANs:
+      - ${lb_int_ip}
+      - ${lb_ext_ip}
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service: {}
